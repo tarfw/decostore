@@ -46,7 +46,7 @@ export function ProductForm({
                   // as an anchor tag
                   return (
                     <Link
-                      className="product-options-item"
+                      className="product-options-item border border-gray-300 p-2 hover:border-gray-500 transition-colors"
                       key={option.name + name}
                       prefetch="intent"
                       preventScrollReset
@@ -71,7 +71,7 @@ export function ProductForm({
                   return (
                     <button
                       type="button"
-                      className={`product-options-item${
+                      className={`product-options-item border border-gray-300 p-2 hover:border-gray-500 transition-colors${
                         exists && !selected ? ' link' : ''
                       }`}
                       key={option.name + name}

@@ -1,11 +1,11 @@
-import {Await, Link} from 'react-router';
+import {Await, Link, NavLink} from 'react-router';
 import {Suspense, useId} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
-import {Aside} from '~/components/Aside';
+import {Aside, useAside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {CartMain} from '~/components/CartMain';
@@ -34,6 +34,23 @@ export function PageLayout({
 }: PageLayoutProps) {
   return (
     <Aside.Provider>
+      {/* Top Marquee Bar */}
+      <div className="top-info-bar bg-purple-700 text-yellow-300 py-2">
+        <div className="animate-marquee whitespace-nowrap inline-block">
+          <span className="mx-4 text-sm font-bold">FREE SHIPPING ON ORDERS OVER $30</span>
+          <span className="mx-4 text-sm">•</span>
+          <span className="mx-4 text-sm font-bold">NEW TOYS EVERY WEEK</span>
+          <span className="mx-4 text-sm">•</span>
+          <span className="mx-4 text-sm font-bold">30-DAY RETURNS</span>
+          <span className="mx-4 text-sm">•</span>
+          <span className="mx-4 text-sm font-bold">FREE SHIPPING ON ORDERS OVER $30</span>
+          <span className="mx-4 text-sm">•</span>
+          <span className="mx-4 text-sm font-bold">NEW TOYS EVERY WEEK</span>
+          <span className="mx-4 text-sm">•</span>
+          <span className="mx-4 text-sm font-bold">30-DAY RETURNS</span>
+        </div>
+      </div>
+      
       <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
@@ -158,16 +175,45 @@ function MobileMenuAside({
   header: PageLayoutProps['header'];
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
 }) {
+  const { close, open } = useAside();
+  
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
       <Aside type="mobile" heading="MENU">
-        <HeaderMenu
-          menu={header.menu}
-          viewport="mobile"
-          primaryDomainUrl={header.shop.primaryDomain.url}
-          publicStoreDomain={publicStoreDomain}
-        />
+        <div className="mobile-menu-content">
+          <HeaderMenu
+            menu={header.menu}
+            viewport="mobile"
+            primaryDomainUrl={header.shop.primaryDomain.url}
+            publicStoreDomain={publicStoreDomain}
+          />
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <NavLink 
+              to="/account" 
+              className="block py-2 text-sm uppercase tracking-wider hover:text-orange-500 transition-colors"
+              onClick={close}
+            >
+              Account
+            </NavLink>
+            <button 
+              className="block py-2 text-sm uppercase tracking-wider hover:text-orange-500 transition-colors text-left w-full text-start"
+              onClick={() => {
+                close();
+                open('search');
+              }}
+            >
+              Search
+            </button>
+            <NavLink 
+              to="/cart" 
+              className="block py-2 text-sm uppercase tracking-wider hover:text-orange-500 transition-colors"
+              onClick={close}
+            >
+              Bag
+            </NavLink>
+          </div>
+        </div>
       </Aside>
     )
   );
